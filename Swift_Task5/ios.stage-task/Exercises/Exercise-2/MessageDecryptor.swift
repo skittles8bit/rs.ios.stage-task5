@@ -3,6 +3,8 @@ import UIKit
 class MessageDecryptor: NSObject {
     
     func decryptMessage(_ message: String) -> String {
+        if !message.isValid() { return "" }
+        
         var countingArray: [String] = []
         var tempCountString = ""
         var repeatStringArray: [String] = []
@@ -38,7 +40,7 @@ class MessageDecryptor: NSObject {
             }
         }
 
-        return message.isValid() ? resultMessage : ""
+        return resultMessage
     }
 }
 
