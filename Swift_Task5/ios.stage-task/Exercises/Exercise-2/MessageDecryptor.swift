@@ -12,11 +12,6 @@ class MessageDecryptor: NSObject {
         
         for character in message {
             if character.isNumber {
-                let number = tempCountString + String(character)
-                if let tempNumber = Int(number) {
-                    if !(1...300).contains(tempNumber) { return "" }
-                }
-                
                 tempCountString = "\(tempCountString)\(character)"
             } else if character == "[" {
                 tempCountString == "" ? countingArray.append("1") : countingArray.append(tempCountString)
@@ -46,16 +41,26 @@ class MessageDecryptor: NSObject {
 
 extension String {
     func isValid() -> Bool {
-        var temp = false
+        let stringArray = self.components(separatedBy: CharacterSet.decimalDigits.inverted)
         
-        if self.count >= 1 || self.count <= 60 {
-            return true
+        for item in stringArray {
+            if let number = Int(item) {
+                if !(1...300).contains(number) { return false }
+            }
+        }
+        
+        if self.contains(" ") {
+            return false
+        }
+        
+        if self.count <= 1 || self.count >= 60{
+            return false
         }
         
         for char in self {
-            temp = !("A"..."Z").contains(char)
+            if ("A"..."Z").contains(char) { return false }
         }
         
-        return temp
+        return true
     }
 }
